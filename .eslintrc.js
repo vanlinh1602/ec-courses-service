@@ -50,7 +50,6 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 0,
-    'import/no-unresolved': 'error',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -61,5 +60,6 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/no-unresolved': 'off',
   },
 };
