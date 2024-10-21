@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import configs from './configs';
+import { RouterModule } from './router/router.module';
+import { DatabaseModule } from './services/database/database.module';
 
 @Module({
   imports: [
@@ -14,8 +14,10 @@ import configs from './configs';
       envFilePath: ['.env', '.env.development'],
       expandVariables: true,
     }),
+    DatabaseModule,
+    RouterModule.forRoot(),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
