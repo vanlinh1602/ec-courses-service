@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { IClassroom } from '../interfaces/classroom.service.interface';
 import { ClassroomService } from '../services/classroom.service';
@@ -14,21 +14,23 @@ export class ClassroomApiController {
   }
 
   @Get('/get/:id')
-  async getClassroom(id: string): Promise<IClassroom> {
+  async getClassroom(@Param('id') id: string): Promise<IClassroom> {
     const classroom = await this.classroomServices.getClassroom({ id });
     return classroom.dataValues;
   }
 
   @Post('/get')
-  async getClassroomByFilter(filter: Partial<IClassroom>): Promise<IClassroom> {
+  async getClassroomByFilter(
+    @Body() filter: Partial<IClassroom>,
+  ): Promise<IClassroom> {
     const classroom = await this.classroomServices.getClassroom(filter);
     return classroom.dataValues;
   }
 
   @Post('/create')
-  async createClassroom(data: {
-    classroom: Partial<IClassroom>;
-  }): Promise<IClassroom> {
+  async createClassroom(
+    @Body() data: { classroom: Partial<IClassroom> },
+  ): Promise<IClassroom> {
     const newClassroom = await this.classroomServices.createClassroom(
       data.classroom,
     );
@@ -36,10 +38,9 @@ export class ClassroomApiController {
   }
 
   @Post('/update')
-  async updateClassroom(data: {
-    id: string;
-    classroom: IClassroom;
-  }): Promise<{ success: boolean }> {
+  async updateClassroom(
+    @Body() data: { id: string; classroom: IClassroom },
+  ): Promise<{ success: boolean }> {
     const success = await this.classroomServices.updateClassroom(
       data.id,
       data.classroom,
@@ -48,7 +49,9 @@ export class ClassroomApiController {
   }
 
   @Post('/delete')
-  async deleteClassroom(data: { id: string }): Promise<{ success: boolean }> {
+  async deleteClassroom(
+    @Body() data: { id: string },
+  ): Promise<{ success: boolean }> {
     const success = await this.classroomServices.deleteClassroom(data.id);
     return { success };
   }
