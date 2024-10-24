@@ -13,15 +13,38 @@ export class ClassroomService implements IClassroomService {
     private classroomRepository: typeof Classroom,
   ) {}
 
-  async createClassroom(classroom: Partial<IClassroom>): Promise<Classroom> {
-    return this.classroomRepository.create({ ...classroom });
+  async getClassroom(filter: Partial<IClassroom>): Promise<Classroom> {
+    return this.classroomRepository.findOne({
+      where: filter,
+    });
   }
 
-  async getClassroom(classroomId: string): Promise<Classroom> {
-    return this.classroomRepository.findOne({
+  async getClassrooms(): Promise<Classroom[]> {
+    return this.classroomRepository.findAll();
+  }
+
+  async createClassroom(classroom: Partial<IClassroom>): Promise<Classroom> {
+    return this.classroomRepository.create(classroom);
+  }
+
+  async updateClassroom(
+    id: string,
+    classroom: Partial<Classroom>,
+  ): Promise<boolean> {
+    const updated = await this.classroomRepository.update(classroom, {
+      where: {
+        id,
+      },
+    });
+    return updated[0] > 0;
+  }
+
+  async deleteClassroom(classroomId: string): Promise<boolean> {
+    const deleted = await this.classroomRepository.destroy({
       where: {
         id: classroomId,
       },
     });
+    return deleted > 0;
   }
 }

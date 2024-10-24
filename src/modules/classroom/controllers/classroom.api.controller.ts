@@ -1,19 +1,55 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 
+import { IClassroom } from '../interfaces/classroom.service.interface';
 import { ClassroomService } from '../services/classroom.service';
 
-@Controller({
-  path: '/classroom',
-})
+@Controller()
 export class ClassroomApiController {
   constructor(private readonly classroomServices: ClassroomService) {}
 
-  @Get('/')
-  async getHello(): Promise<string> {
-    const classroom = await this.classroomServices.createClassroom({
-      name: 'Classroom 1',
-      description: 'This is the first classroom',
-    });
-    return `Welcome to the Classroom API! ${classroom.name}`;
+  @Get('/get/all')
+  async getClassrooms(): Promise<IClassroom[]> {
+    const classrooms = await this.classroomServices.getClassrooms();
+    return classrooms.map((classroom) => classroom.dataValues);
+  }
+
+  @Get('/get/:id')
+  async getClassroom(id: string): Promise<IClassroom> {
+    const classroom = await this.classroomServices.getClassroom({ id });
+    return classroom.dataValues;
+  }
+
+  @Post('/get')
+  async getClassroomByFilter(filter: Partial<IClassroom>): Promise<IClassroom> {
+    const classroom = await this.classroomServices.getClassroom(filter);
+    return classroom.dataValues;
+  }
+
+  @Post('/create')
+  async createClassroom(data: {
+    classroom: Partial<IClassroom>;
+  }): Promise<IClassroom> {
+    const newClassroom = await this.classroomServices.createClassroom(
+      data.classroom,
+    );
+    return newClassroom.dataValues;
+  }
+
+  @Post('/update')
+  async updateClassroom(data: {
+    id: string;
+    classroom: IClassroom;
+  }): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.updateClassroom(
+      data.id,
+      data.classroom,
+    );
+    return { success };
+  }
+
+  @Post('/delete')
+  async deleteClassroom(data: { id: string }): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.deleteClassroom(data.id);
+    return { success };
   }
 }
