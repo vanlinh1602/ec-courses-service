@@ -15,22 +15,22 @@ export class Classroom extends Model<IClassroom, IClassroomCreate> {
   @Column
   course: string;
 
-  @Column(DataType.ARRAY(DataType.STRING))
+  @Column(DataType.JSON)
   teacher: string[];
 
-  @Column(DataType.ARRAY(DataType.STRING))
+  @Column(DataType.JSON)
   students: string[];
 
-  @Column(DataType.ARRAY(DataType.STRING))
+  @Column(DataType.JSON)
   daysInWeek: string[];
 
   @Column
   hoursInDay: string;
 
-  @Column
+  @Column(DataType.DOUBLE)
   dateStart: number;
 
-  @Column
+  @Column(DataType.DOUBLE)
   dateEnd: number;
 
   @Column
