@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { Classroom } from './database/classroom.entity';
+import { Classroom } from '../../database/entities/classroom/classroom.entity';
 import { ClassroomService } from './services/classroom.service';
 
 @Module({

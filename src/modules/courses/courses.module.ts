@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { CourseSyllabus } from 'src/database/entities/courses/syllabus.entity';
 
-import { Courses } from './database/courses.entity';
+import { Courses } from '../../database/entities/courses/courses.entity';
 import { CoursesService } from './services/courses.service';
 
 @Module({
@@ -11,12 +12,20 @@ import { CoursesService } from './services/courses.service';
       provide: 'COURSES_REPOSITORY',
       useValue: Courses,
     },
+    {
+      provide: 'COURSES_SYLLABUS',
+      useClass: CourseSyllabus,
+    },
   ],
   providers: [
     CoursesService,
     {
       provide: 'COURSES_REPOSITORY',
       useValue: Courses,
+    },
+    {
+      provide: 'COURSES_SYLLABUS',
+      useClass: CourseSyllabus,
     },
   ],
   controllers: [],

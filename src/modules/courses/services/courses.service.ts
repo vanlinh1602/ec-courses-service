@@ -1,27 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { CourseSyllabus } from 'src/database/entities/courses/syllabus.entity';
+import { ICourses, ICourseSyllabus } from 'src/database/types/courses';
 
-import { Courses } from '../database/courses.entity';
-import {
-  ICourses,
-  ICoursesService,
-} from '../interfaces/courses.service.interface';
+import { Courses } from '../../../database/entities/courses/courses.entity';
+import { ICoursesService } from '../interfaces/courses.service.interface';
 
 @Injectable()
 export class CoursesService implements ICoursesService {
   constructor(
     @Inject('COURSES_REPOSITORY')
     private classroomRepository: typeof Courses,
+    @Inject('COURSES_SYLLABUS')
+    private syllabusRepository: typeof CourseSyllabus,
   ) {}
 
+  // Courses Service Methods
   async createCourse(course: Partial<ICourses>): Promise<Courses> {
     return this.classroomRepository.create(course);
   }
 
-  async getCourse(classroomId: string): Promise<Courses> {
-    return this.classroomRepository.findOne({
-      where: {
-        id: classroomId,
-      },
+  async getFilterCourse(filter: Partial<ICourses>): Promise<Courses[]> {
+    return this.classroomRepository.findAll({
+      where: filter,
     });
   }
 
@@ -45,5 +45,30 @@ export class CoursesService implements ICoursesService {
       },
     });
     return deleted > 0;
+  }
+
+  // Syllabus Service Methods
+  async createSyllabus(syllabus: ICourseSyllabus): Promise<CourseSyllabus> {
+    return this.syllabusRepository.create(syllabus);
+  }
+
+  async getSyllabus(courseId: string): Promise<CourseSyllabus> {
+    return this.syllabusRepository.findOne({
+      where: {
+        course: courseId,
+      },
+    });
+  }
+
+  async updateSyllabus(
+    courseId: string,
+    syllabus: ICourseSyllabus,
+  ): Promise<boolean> {
+    const updated = await this.syllabusRepository.update(syllabus, {
+      where: {
+        course: courseId,
+      },
+    });
+    return updated[0] > 0;
   }
 }

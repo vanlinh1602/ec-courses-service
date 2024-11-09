@@ -1,10 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IClassroom } from 'src/database/types/classroom';
 
-import { Classroom } from '../database/classroom.entity';
-import {
-  IClassroom,
-  IClassroomService,
-} from '../interfaces/classroom.service.interface';
+import { Classroom } from '../../../database/entities/classroom/classroom.entity';
+import { IClassroomService } from '../interfaces/classroom.service.interface';
 
 @Injectable()
 export class ClassroomService implements IClassroomService {

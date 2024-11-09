@@ -1,21 +1,6 @@
-import { Optional } from 'sequelize';
+import { IClassroom } from 'src/database/types/classroom';
 
-import { Classroom } from '../database/classroom.entity';
-
-export interface IClassroom {
-  id: string;
-  name: string;
-  course: string;
-  teacher: string[];
-  students: string[];
-  daysInWeek: string[];
-  hoursInDay: string;
-  dateStart: number;
-  dateEnd: number;
-  status: string;
-}
-
-export type IClassroomCreate = Optional<IClassroom, 'id'>;
+import { Classroom } from '../../../database/entities/classroom/classroom.entity';
 
 export interface IClassroomService {
   getClassroom: (filter: Partial<IClassroom>) => Promise<Classroom>;

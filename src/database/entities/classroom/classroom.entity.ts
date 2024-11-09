@@ -1,9 +1,5 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-
-import {
-  IClassroom,
-  IClassroomCreate,
-} from '../interfaces/classroom.service.interface';
+import { IClassroom, IClassroomCreate } from 'src/database/types/classroom';
 
 @Table({
   tableName: 'classrooms',

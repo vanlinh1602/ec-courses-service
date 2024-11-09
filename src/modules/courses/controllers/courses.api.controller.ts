@@ -1,22 +1,21 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ICourses } from 'src/database/types/courses';
 
-import { ICourses } from '../interfaces/courses.service.interface';
 import { CoursesService } from '../services/courses.service';
 
 @Controller()
 export class CoursesApiController {
   constructor(private readonly coursesServices: CoursesService) {}
 
-  @Get('/get/all')
-  async getAll(): Promise<ICourses[]> {
-    const courses = await this.coursesServices.getCourses();
-    return courses.map((course) => course.dataValues);
-  }
-
-  @Get('/get/:id')
-  async getCourse(@Param('id') id: string): Promise<ICourses> {
-    const classroom = await this.coursesServices.getCourse(id);
-    return classroom.dataValues;
+  @Get('/get')
+  async getCourse(@Query() filter: Partial<ICourses>): Promise<ICourses[]> {
+    if (!Object.keys(filter).length) {
+      const classes = await this.coursesServices.getCourses();
+      return classes.map((c) => c.dataValues);
+    } else {
+      const classes = await this.coursesServices.getFilterCourse(filter);
+      return classes.map((c) => c.dataValues);
+    }
   }
 
   @Post('/create')

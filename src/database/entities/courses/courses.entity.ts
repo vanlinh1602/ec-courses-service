@@ -1,9 +1,5 @@
 import { Column, Model, Table } from 'sequelize-typescript';
-
-import {
-  ICourses,
-  ICoursesCreate,
-} from '../interfaces/courses.service.interface';
+import { ICourses, ICoursesCreate } from 'src/database/types/courses';
 
 @Table({
   tableName: 'courses',

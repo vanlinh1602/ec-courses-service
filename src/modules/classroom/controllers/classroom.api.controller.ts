@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { IClassroom } from 'src/database/types/classroom';
 
-import { IClassroom } from '../interfaces/classroom.service.interface';
 import { ClassroomService } from '../services/classroom.service';
 
 @Controller()
