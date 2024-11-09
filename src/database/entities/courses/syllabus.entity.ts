@@ -1,4 +1,10 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
 import {
   ICourseSyllabus,
   ICourseSyllabusCreate,
@@ -11,6 +17,7 @@ export class CourseSyllabus extends Model<
   ICourseSyllabus,
   ICourseSyllabusCreate
 > {
+  @PrimaryKey
   @Column
   course: string;
 

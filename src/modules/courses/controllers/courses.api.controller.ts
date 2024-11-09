@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ICourses } from 'src/database/types/courses';
+import { ICourses, ICourseSyllabus } from 'src/database/types/courses';
 
 import { CoursesService } from '../services/courses.service';
 
@@ -42,6 +42,35 @@ export class CoursesApiController {
     @Body() data: { id: string },
   ): Promise<{ success: boolean }> {
     const success = await this.coursesServices.deleteCourse(data.id);
+    return { success };
+  }
+
+  // Syllabus
+
+  @Post('/syllabus/create')
+  async createSyllabus(
+    @Body() data: Partial<ICourseSyllabus>,
+  ): Promise<ICourseSyllabus> {
+    const success = await this.coursesServices.createSyllabus(data);
+    return success.dataValues;
+  }
+
+  @Get('/syllabus/get')
+  async getSyllabus(
+    @Query() query: { courseId: string },
+  ): Promise<ICourseSyllabus> {
+    const success = await this.coursesServices.getSyllabus(query.courseId);
+    return success.dataValues;
+  }
+
+  @Post('/syllabus/update')
+  async updateSyllabus(
+    @Body() data: { courseId: string; syllabus: ICourseSyllabus },
+  ): Promise<{ success: boolean }> {
+    const success = await this.coursesServices.updateSyllabus(
+      data.courseId,
+      data.syllabus,
+    );
     return { success };
   }
 }

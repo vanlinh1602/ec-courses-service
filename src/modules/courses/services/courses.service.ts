@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { generateID } from 'src/common';
 import { CourseSyllabus } from 'src/database/entities/courses/syllabus.entity';
 import { ICourses, ICourseSyllabus } from 'src/database/types/courses';
 
@@ -9,28 +10,31 @@ import { ICoursesService } from '../interfaces/courses.service.interface';
 export class CoursesService implements ICoursesService {
   constructor(
     @Inject('COURSES_REPOSITORY')
-    private classroomRepository: typeof Courses,
-    @Inject('COURSES_SYLLABUS')
+    private coursesRepository: typeof Courses,
+    @Inject('COURSES_SYLLABUS_REPOSITORY')
     private syllabusRepository: typeof CourseSyllabus,
   ) {}
 
   // Courses Service Methods
   async createCourse(course: Partial<ICourses>): Promise<Courses> {
-    return this.classroomRepository.create(course);
+    return this.coursesRepository.create({
+      ...course,
+      id: generateID(),
+    });
   }
 
   async getFilterCourse(filter: Partial<ICourses>): Promise<Courses[]> {
-    return this.classroomRepository.findAll({
+    return this.coursesRepository.findAll({
       where: filter,
     });
   }
 
   async getCourses(): Promise<Courses[]> {
-    return this.classroomRepository.findAll();
+    return this.coursesRepository.findAll();
   }
 
   async updateCourse(id: string, course: Partial<ICourses>): Promise<boolean> {
-    const updated = await this.classroomRepository.update(course, {
+    const updated = await this.coursesRepository.update(course, {
       where: {
         id: id,
       },
@@ -39,7 +43,7 @@ export class CoursesService implements ICoursesService {
   }
 
   async deleteCourse(courseId: string): Promise<boolean> {
-    const deleted = await this.classroomRepository.destroy({
+    const deleted = await this.coursesRepository.destroy({
       where: {
         id: courseId,
       },
@@ -48,7 +52,12 @@ export class CoursesService implements ICoursesService {
   }
 
   // Syllabus Service Methods
-  async createSyllabus(syllabus: ICourseSyllabus): Promise<CourseSyllabus> {
+  async createSyllabus(
+    syllabus: Partial<ICourseSyllabus>,
+  ): Promise<CourseSyllabus> {
+    console.log('syllabus', syllabus);
+    console.log('syllabusRepository', this.syllabusRepository);
+
     return this.syllabusRepository.create(syllabus);
   }
 

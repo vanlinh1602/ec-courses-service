@@ -13,8 +13,8 @@ import { CoursesService } from './services/courses.service';
       useValue: Courses,
     },
     {
-      provide: 'COURSES_SYLLABUS',
-      useClass: CourseSyllabus,
+      provide: 'COURSES_SYLLABUS_REPOSITORY',
+      useValue: CourseSyllabus,
     },
   ],
   providers: [
@@ -24,8 +24,8 @@ import { CoursesService } from './services/courses.service';
       useValue: Courses,
     },
     {
-      provide: 'COURSES_SYLLABUS',
-      useClass: CourseSyllabus,
+      provide: 'COURSES_SYLLABUS_REPOSITORY',
+      useValue: CourseSyllabus,
     },
   ],
   controllers: [],
