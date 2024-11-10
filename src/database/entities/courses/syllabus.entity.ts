@@ -23,6 +23,7 @@ export class CourseSyllabus extends Model<
 
   @Column(DataType.JSON)
   styllabus: {
+    id: string;
     week: number;
     description: string;
   }[];

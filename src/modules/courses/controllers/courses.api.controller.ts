@@ -65,12 +65,20 @@ export class CoursesApiController {
 
   @Post('/syllabus/update')
   async updateSyllabus(
-    @Body() data: { courseId: string; syllabus: ICourseSyllabus },
+    @Body() data: { course: string; syllabus: ICourseSyllabus },
   ): Promise<{ success: boolean }> {
     const success = await this.coursesServices.updateSyllabus(
-      data.courseId,
+      data.course,
       data.syllabus,
     );
+    return { success };
+  }
+
+  @Post('/syllabus/delete')
+  async deleteSyllabus(
+    @Body() data: { course: string },
+  ): Promise<{ success: boolean }> {
+    const success = await this.coursesServices.deleteSyllabus(data.course);
     return { success };
   }
 }

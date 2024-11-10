@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { generateID } from 'src/common';
 import { IClassroom } from 'src/database/types/classroom';
 
 import { Classroom } from '../../../database/entities/classroom/classroom.entity';
@@ -11,8 +12,8 @@ export class ClassroomService implements IClassroomService {
     private classroomRepository: typeof Classroom,
   ) {}
 
-  async getClassroom(filter: Partial<IClassroom>): Promise<Classroom> {
-    return this.classroomRepository.findOne({
+  async getFilterClassroom(filter: Partial<IClassroom>): Promise<Classroom[]> {
+    return this.classroomRepository.findAll({
       where: filter,
     });
   }
@@ -22,7 +23,10 @@ export class ClassroomService implements IClassroomService {
   }
 
   async createClassroom(classroom: Partial<IClassroom>): Promise<Classroom> {
-    return this.classroomRepository.create(classroom);
+    return this.classroomRepository.create({
+      ...classroom,
+      id: generateID(),
+    });
   }
 
   async updateClassroom(

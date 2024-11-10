@@ -7,24 +7,17 @@ import { ClassroomService } from '../services/classroom.service';
 export class ClassroomApiController {
   constructor(private readonly classroomServices: ClassroomService) {}
 
-  @Get('/get/all')
-  async getClassrooms(): Promise<IClassroom[]> {
-    const classrooms = await this.classroomServices.getClassrooms();
-    return classrooms.map((classroom) => classroom.dataValues);
-  }
-
-  @Get('/get/:id')
-  async getClassroom(@Param('id') id: string): Promise<IClassroom> {
-    const classroom = await this.classroomServices.getClassroom({ id });
-    return classroom.dataValues;
-  }
-
-  @Post('/get')
+  @Get('/get')
   async getClassroomByFilter(
-    @Body() filter: Partial<IClassroom>,
-  ): Promise<IClassroom> {
-    const classroom = await this.classroomServices.getClassroom(filter);
-    return classroom.dataValues;
+    @Param() filter: Partial<IClassroom>,
+  ): Promise<IClassroom[]> {
+    if (!Object.keys(filter).length) {
+      const classes = await this.classroomServices.getClassrooms();
+      return classes.map((c) => c.dataValues);
+    } else {
+      const classes = await this.classroomServices.getFilterClassroom(filter);
+      return classes.map((c) => c.dataValues);
+    }
   }
 
   @Post('/create')

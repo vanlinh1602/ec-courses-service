@@ -80,4 +80,13 @@ export class CoursesService implements ICoursesService {
     });
     return updated[0] > 0;
   }
+
+  async deleteSyllabus(courseId: string): Promise<boolean> {
+    const deleted = await this.syllabusRepository.destroy({
+      where: {
+        course: courseId,
+      },
+    });
+    return deleted > 0;
+  }
 }
