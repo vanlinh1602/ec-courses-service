@@ -55,9 +55,6 @@ export class CoursesService implements ICoursesService {
   async createSyllabus(
     syllabus: Partial<ICourseSyllabus>,
   ): Promise<CourseSyllabus> {
-    console.log('syllabus', syllabus);
-    console.log('syllabusRepository', this.syllabusRepository);
-
     return this.syllabusRepository.create(syllabus);
   }
 
