@@ -7,8 +7,15 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { IClassroom } from 'src/database/types/classroom';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  IAssignment,
+  IClassroom,
+  ISubmission,
+} from 'src/database/types/classroom';
 
 import { ClassroomService } from '../services/classroom.service';
 
@@ -55,6 +62,101 @@ export class ClassroomApiController {
     @Query() data: { id: string },
   ): Promise<{ success: boolean }> {
     const success = await this.classroomServices.deleteClassroom(data.id);
+    return { success };
+  }
+
+  // Assignment
+
+  @Get('/assignment')
+  async getAssignmentByFilter(
+    @Param() filter: { classroomId: string },
+  ): Promise<IAssignment[]> {
+    const assignments =
+      await this.classroomServices.getFilterAssignment(filter);
+    return assignments.map((a) => a.dataValues);
+  }
+
+  @Post('/assignment')
+  async createAssignment(
+    @Body() data: { assignment: { classroomId: string; title: string } },
+  ): Promise<IAssignment> {
+    const success = await this.classroomServices.createAssignment(
+      data.assignment,
+    );
+    return success.dataValues;
+  }
+
+  @Put('/assignment')
+  async updateAssignment(
+    @Body()
+    data: {
+      id: string;
+      assignment: { classroomId: string; title: string };
+    },
+  ): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.updateAssignment(
+      data.id,
+      data.assignment,
+    );
+    return { success };
+  }
+
+  @Delete('/assignment')
+  async deleteAssignment(
+    @Query() data: { id: string },
+  ): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.deleteAssignment(data.id);
+    return { success };
+  }
+
+  // Submission
+
+  @Get('/submission')
+  async getSubmissionByFilter(
+    @Param() filter: { assignmentId: string },
+  ): Promise<ISubmission[]> {
+    const submissions =
+      await this.classroomServices.getFilterSubmission(filter);
+    return submissions.map((s) => s.dataValues);
+  }
+
+  @Post('/submission')
+  @UseInterceptors(FileInterceptor('file'))
+  async createSubmission(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() submission: Partial<ISubmission>,
+  ): Promise<ISubmission> {
+    const submissionData = { ...submission, file };
+    const success =
+      await this.classroomServices.createSubmission(submissionData);
+    return success.dataValues;
+  }
+
+  @Put('/submission')
+  async updateSubmission(
+    @Body()
+    data: {
+      studentId: string;
+      assignmentId: string;
+      submission: { assignmentId: string; content: string };
+    },
+  ): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.updateSubmission(
+      data.studentId,
+      data.assignmentId,
+      data.submission,
+    );
+    return { success };
+  }
+
+  @Delete('/submission')
+  async deleteSubmission(
+    @Query() data: { studentId: string; assignmentId: string },
+  ): Promise<{ success: boolean }> {
+    const success = await this.classroomServices.deleteSubmission(
+      data.studentId,
+      data.assignmentId,
+    );
     return { success };
   }
 }

@@ -28,7 +28,7 @@ export interface IAssignment {
   classId: string;
   title: string;
   description: string;
-  dueDate: number;
+  dueDate: Date;
 }
 
 export interface ISubmission {

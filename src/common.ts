@@ -1,5 +1,7 @@
 import { nanoid } from 'nanoid';
 
+export const PATH_UPLOADS = `${process.cwd()}/public/uploads`;
+
 export const generateID = (
   ids: string[] = [],
   size = 5,

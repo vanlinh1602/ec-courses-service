@@ -24,6 +24,6 @@ export class Assignment extends Model<IAssignment, IAssignmentCreate> {
   @Column
   description: string;
 
-  @Column
-  dueDate: number;
+  @Column(DataType.DATE)
+  dueDate: Date;
 }
