@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ICourses, ICourseSyllabus } from 'src/database/types/courses';
 
 import { CoursesService } from '../services/courses.service';
@@ -7,7 +15,7 @@ import { CoursesService } from '../services/courses.service';
 export class CoursesApiController {
   constructor(private readonly coursesServices: CoursesService) {}
 
-  @Get('/get')
+  @Get('/')
   async getCourse(@Query() filter: Partial<ICourses>): Promise<ICourses[]> {
     if (!Object.keys(filter).length) {
       const classes = await this.coursesServices.getCourses();
@@ -18,7 +26,7 @@ export class CoursesApiController {
     }
   }
 
-  @Post('/create')
+  @Post('/')
   async createCourse(
     @Body() data: { course: Partial<ICourses> },
   ): Promise<ICourses> {
@@ -26,7 +34,7 @@ export class CoursesApiController {
     return newCourse.dataValues;
   }
 
-  @Post('/update')
+  @Put('/')
   async updateCourse(
     @Body() data: { id: string; course: Partial<ICourses> },
   ): Promise<{ success: boolean }> {
@@ -37,17 +45,17 @@ export class CoursesApiController {
     return { success };
   }
 
-  @Post('/delete')
+  @Delete('/')
   async deleteCourse(
-    @Body() data: { id: string },
+    @Query() query: { id: string },
   ): Promise<{ success: boolean }> {
-    const success = await this.coursesServices.deleteCourse(data.id);
+    const success = await this.coursesServices.deleteCourse(query.id);
     return { success };
   }
 
   // Syllabus
 
-  @Post('/syllabus/create')
+  @Post('/syllabus')
   async createSyllabus(
     @Body() data: Partial<ICourseSyllabus>,
   ): Promise<ICourseSyllabus> {
@@ -55,7 +63,7 @@ export class CoursesApiController {
     return success.dataValues;
   }
 
-  @Get('/syllabus/get')
+  @Get('/syllabus')
   async getSyllabus(
     @Query() query: { courseId: string },
   ): Promise<ICourseSyllabus> {
@@ -63,7 +71,7 @@ export class CoursesApiController {
     return success.dataValues;
   }
 
-  @Post('/syllabus/update')
+  @Put('/syllabus')
   async updateSyllabus(
     @Body() data: { course: string; syllabus: ICourseSyllabus },
   ): Promise<{ success: boolean }> {
@@ -74,9 +82,9 @@ export class CoursesApiController {
     return { success };
   }
 
-  @Post('/syllabus/delete')
+  @Delete('/syllabus')
   async deleteSyllabus(
-    @Body() data: { course: string },
+    @Query() data: { course: string },
   ): Promise<{ success: boolean }> {
     const success = await this.coursesServices.deleteSyllabus(data.course);
     return { success };

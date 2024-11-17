@@ -23,4 +23,23 @@ export interface IClassroom {
   updatedAt?: Date;
 }
 
+export interface IAssignment {
+  id: string;
+  classId: string;
+  title: string;
+  description: string;
+  dueDate: number;
+}
+
+export interface ISubmission {
+  assignmentId: string;
+  studentId: string;
+  submission: string;
+  path: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export type IClassroomCreate = Optional<IClassroom, 'id'>;
+export type IAssignmentCreate = Optional<IAssignment, 'id'>;
+export type ISubmissionCreate = ISubmission;
