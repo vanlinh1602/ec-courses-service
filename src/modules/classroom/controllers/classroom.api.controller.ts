@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Put,
   Query,
@@ -25,7 +24,7 @@ export class ClassroomApiController {
 
   @Get('/')
   async getClassroomByFilter(
-    @Param() filter: Partial<IClassroom>,
+    @Query() filter: Partial<IClassroom>,
   ): Promise<IClassroom[]> {
     if (!Object.keys(filter).length) {
       const classes = await this.classroomServices.getClassrooms();
@@ -69,7 +68,7 @@ export class ClassroomApiController {
 
   @Get('/assignment')
   async getAssignmentByFilter(
-    @Param() filter: { classroomId: string },
+    @Query() filter: { classroomId: string },
   ): Promise<IAssignment[]> {
     const assignments =
       await this.classroomServices.getFilterAssignment(filter);
@@ -113,7 +112,7 @@ export class ClassroomApiController {
 
   @Get('/submission')
   async getSubmissionByFilter(
-    @Param() filter: { assignmentId: string },
+    @Query() filter: { assignmentId: string },
   ): Promise<ISubmission[]> {
     const submissions =
       await this.classroomServices.getFilterSubmission(filter);

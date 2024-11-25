@@ -1,6 +1,7 @@
 import {
   Column,
   DataType,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
@@ -10,6 +11,8 @@ import {
   ICourseSyllabusCreate,
 } from 'src/database/types/courses';
 
+import { Courses } from './courses.entity';
+
 @Table({
   tableName: 'course-syllabus',
 })
@@ -18,6 +21,7 @@ export class CourseSyllabus extends Model<
   ICourseSyllabusCreate
 > {
   @PrimaryKey
+  @ForeignKey(() => Courses)
   @Column
   course: string;
 

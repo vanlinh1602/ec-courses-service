@@ -101,7 +101,9 @@ export class ClassroomService implements IClassroomService {
     assignmentId: string;
   }): Promise<Submission[]> {
     return this.submissionRepository.findAll({
-      where: filter,
+      where: {
+        assignmentId: filter.assignmentId,
+      },
     });
   }
 
